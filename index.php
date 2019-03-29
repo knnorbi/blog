@@ -23,6 +23,11 @@ if($_SESSION['level'] < 1) {
 <input type="submit" class="btn btn-primary">
 </form>
 <a href="logout.php">Logout</a>
+<?php
+    if($_SESSION['level'] == 2) {
+        echo "<br><a href=\"useradmin.php\">Felhasználók kezelése</a>";
+    }
+?>
 </div>
 
 <div class="col-md-9">
@@ -40,12 +45,15 @@ if(isset($_POST['uzi'])) {
     $link->query($query);
 }
 
-$eredmeny = $link->query("SELECT uzik.id, uzi, name, date FROM uzik INNER JOIN users ON users.id = uzik.user;");
+$eredmeny = $link->query("SELECT uzik.id, uzi, name, date FROM uzik LEFT JOIN users ON users.id = uzik.user ORDER BY date;");
 
 while ($row = mysqli_fetch_array($eredmeny)) {
     $uzi = $row['uzi'];
     $date = $row['date'];
     $user = $row['name'];
+    if($user == null) {
+        $user = "törölt felhasználó";
+    }
     echo "<i>$user said at $date</i><br>";
     echo "<p>$uzi</p>";
     if($_SESSION['level'] == 2) {
