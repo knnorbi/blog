@@ -52,12 +52,13 @@ $link = DBcon();
         </div>
     </form>
     <hr>
-    <a href="logout.php">Logout</a>
+    <a href="settings.php">Beállítások</a><br>
     <?php
     if($_SESSION['level'] == 2) {
-        echo "<br><a href=\"useradmin.php\">Felhasználók kezelése</a>";
+        echo "<a href=\"useradmin.php\">Felhasználók kezelése</a><br>";
     }
     ?>
+    <a href="logout.php">Logout</a>
 </div>
 
 <div class="col-md-9">
