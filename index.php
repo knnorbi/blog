@@ -67,7 +67,7 @@ if(isset($_POST['uzi'])) {
     $uzenet = $_POST['uzi'];
     $datum = date('Y-m-d H:i:s');
     $id = $_SESSION['id'];
-    $query = "INSERT INTO uzik VALUES (NULL, $id, \"$datum\", \"$uzenet\");";
+    $query = "INSERT INTO uzik VALUES (NULL, $id, \"$datum\", \"$uzenet\", NULL);";
     //echo $query;
     $link->query($query);
 }
@@ -92,8 +92,9 @@ while ($row = mysqli_fetch_array($eredmeny)) {
     }
     echo "<i>$user said at $date</i><br>";
     echo "<p>$uzi</p>";
+    $id = $row['id'];
+    echo "<p><a href=\"reply.php?id=$id\">Reply</a></p>";
     if($_SESSION['level'] == 2) {
-        $id = $row['id'];
         echo "<a href=\"delete.php?id=$id\">Delete</a>";
     }
     echo "<hr>";
