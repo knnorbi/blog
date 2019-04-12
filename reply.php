@@ -12,7 +12,7 @@ if(isset($_POST['reply']) && strlen($_POST['reply'])) {
     $reply = $_POST['reply'];
     $datum = date('Y-m-d H:i:s');
     $replyFor = $_POST['replyfor'];
-    
+
     $link->query("INSERT INTO uzik VALUES (NULL, $user, '$datum', '$reply', $replyFor);");
     header("Location: index.php");
 }

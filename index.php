@@ -71,10 +71,10 @@ if(isset($_POST['uzi'])) {
     //echo $query;
     $link->query($query);
 }
-$feltetel = "";
+$feltetel = "WHERE replyFor IS NULL";
 
 if(isset($_GET['selectedUser']) && $_GET['selectedUser'] != 0) {
-    $feltetel = "WHERE users.id = " . $_GET['selectedUser'];
+    $feltetel = $feltetel . " AND users.id = " . $_GET['selectedUser'];
 }
 
 $eredmeny = $link->query(
@@ -91,12 +91,33 @@ while ($row = mysqli_fetch_array($eredmeny)) {
         $user = "törölt felhasználó";
     }
     echo "<i>$user said at $date</i><br>";
-    echo "<p>$uzi</p>";
+    echo "$uzi<br>";
     $id = $row['id'];
-    echo "<p><a href=\"reply.php?id=$id\">Reply</a></p>";
+    echo "<a href=\"reply.php?id=$id\">Reply</a>";
     if($_SESSION['level'] == 2) {
-        echo "<a href=\"delete.php?id=$id\">Delete</a>";
+        echo "<br><a href=\"delete.php?id=$id\">Delete</a>";
     }
+
+    $valaszok = $link->query("SELECT uzik.id, uzi, name, date 
+FROM uzik LEFT JOIN users ON users.id = uzik.user 
+WHERE replyFor = $id
+ORDER BY date;");
+
+    while ($valasz = mysqli_fetch_array($valaszok)) {
+        $vuzi = $valasz['uzi'];
+        $vdate = $valasz['date'];
+        $vuser = $valasz['name'];
+        echo "<div style='margin-left: 20px; '>";
+        echo "<i>$vuser replied at $vdate</i><br>";
+        echo "$vuzi";
+        $vid = $valasz['id'];
+        if($_SESSION['level'] == 2) {
+            echo "<br><a href=\"delete.php?id=$vid\">Delete</a>";
+        }
+        echo "<br><br></div>";
+
+    }
+
     echo "<hr>";
 }
 
